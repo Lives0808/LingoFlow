@@ -1,0 +1,928 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "sourceLocale": {
+      "default": "en",
+      "type": "string"
+    },
+    "locales": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "catalogs": {
+      "default": [
+        {
+          "path": "locales/{locale}.json",
+          "format": "auto"
+        }
+      ],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "format": {
+            "default": "auto",
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "json",
+                  "yaml",
+                  "properties",
+                  "po",
+                  "arb",
+                  "strings",
+                  "csv",
+                  "tsjs"
+                ]
+              },
+              {
+                "type": "string",
+                "const": "auto"
+              }
+            ]
+          },
+          "locale": {
+            "type": "string"
+          },
+          "nesting": {
+            "default": true,
+            "type": "boolean"
+          },
+          "keySeparator": {
+            "default": ".",
+            "type": "string"
+          },
+          "keepOrder": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "path"
+        ]
+      }
+    },
+    "code": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "include": {
+          "default": [
+            "src/**/*.{ts,tsx,js,jsx,mjs,cjs,vue,svelte,astro}",
+            "app/**/*.{ts,tsx,js,jsx,vue,svelte}"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "default": [
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/.git/**",
+            "**/coverage/**",
+            "**/*.min.js",
+            "**/*.d.ts"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "calls": {
+          "default": [
+            "t",
+            "i18n.t",
+            "i18next.t",
+            "$t",
+            "$tc",
+            "translate",
+            "formatMessage",
+            "intl.formatMessage"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "components": {
+          "default": [
+            "Trans",
+            "FormattedMessage",
+            "I18n",
+            "T"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hardcoded": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "mode": {
+              "default": "report",
+              "type": "string",
+              "enum": [
+                "off",
+                "report",
+                "extract"
+              ]
+            },
+            "attributes": {
+              "default": [
+                "placeholder",
+                "title",
+                "label",
+                "alt",
+                "aria-label",
+                "aria-description",
+                "tooltip"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minWords": {
+              "default": 2,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "ignore": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minConfidence": {
+              "default": 0.75,
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "rewrite": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "callTemplate": {
+                  "default": "t('{key}')",
+                  "type": "string"
+                },
+                "importStatement": {
+                  "type": "string"
+                },
+                "jsxBraces": {
+                  "default": true,
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "translation": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "engine": {
+          "default": "offline",
+          "type": "string",
+          "enum": [
+            "offline",
+            "pseudo",
+            "argos",
+            "libretranslate",
+            "deepl",
+            "openai",
+            "custom"
+          ]
+        },
+        "fallback": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "offline",
+              "pseudo",
+              "argos",
+              "libretranslate",
+              "deepl",
+              "openai",
+              "custom"
+            ]
+          }
+        },
+        "policy": {
+          "default": "missing",
+          "type": "string",
+          "enum": [
+            "missing",
+            "empty",
+            "untranslated",
+            "stale",
+            "all"
+          ]
+        },
+        "concurrency": {
+          "default": 4,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "timeoutMs": {
+          "default": 60000,
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "retries": {
+          "default": 2,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "maxItems": {
+          "default": 0,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "provider": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "offline": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "dictionary": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "default": true,
+                  "type": "boolean"
+                }
+              }
+            },
+            "argos": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "python": {
+                  "default": "python3",
+                  "type": "string"
+                },
+                "modelDir": {
+                  "type": "string"
+                },
+                "bridge": {
+                  "type": "string"
+                }
+              }
+            },
+            "libretranslate": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "url": {
+                  "default": "http://localhost:5000",
+                  "type": "string"
+                },
+                "apiKeyEnv": {
+                  "default": "LIBRETRANSLATE_API_KEY",
+                  "type": "string"
+                }
+              }
+            },
+            "deepl": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "endpoint": {
+                  "default": "https://api-free.deepl.com",
+                  "type": "string"
+                },
+                "apiKeyEnv": {
+                  "default": "DEEPL_API_KEY",
+                  "type": "string"
+                },
+                "formality": {
+                  "default": "default",
+                  "type": "string",
+                  "enum": [
+                    "default",
+                    "more",
+                    "less",
+                    "prefer_more",
+                    "prefer_less"
+                  ]
+                },
+                "targetMap": {
+                  "default": {},
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "openai": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "baseUrl": {
+                  "default": "https://api.openai.com/v1",
+                  "type": "string"
+                },
+                "model": {
+                  "default": "gpt-4o-mini",
+                  "type": "string"
+                },
+                "apiKeyEnv": {
+                  "default": "OPENAI_API_KEY",
+                  "type": "string"
+                },
+                "temperature": {
+                  "default": 0.2,
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "batchSize": {
+                  "default": 12,
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "jsonMode": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "maxTokens": {
+                  "default": 2048,
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "systemPrompt": {
+                  "type": "string"
+                },
+                "extraBody": {
+                  "default": {},
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {}
+                }
+              }
+            },
+            "custom": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "url": {
+                  "default": "",
+                  "type": "string"
+                },
+                "method": {
+                  "default": "POST",
+                  "type": "string",
+                  "enum": [
+                    "POST",
+                    "GET"
+                  ]
+                },
+                "headers": {
+                  "default": {
+                    "content-type": "application/json"
+                  },
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "bodyTemplate": {
+                  "default": "{\"text\": {{json.text}}, \"source\": {{json.source}}, \"target\": {{json.target}}}",
+                  "type": "string"
+                },
+                "responsePath": {
+                  "default": "translatedText",
+                  "type": "string"
+                },
+                "apiKeyEnv": {
+                  "type": "string"
+                },
+                "apiKeyHeader": {
+                  "default": "authorization",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "memory": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "path": {
+              "default": ".lingoflow/memory",
+              "type": "string"
+            },
+            "driver": {
+              "default": "auto",
+              "type": "string",
+              "enum": [
+                "auto",
+                "sqlite",
+                "jsonl"
+              ]
+            },
+            "fuzzyThreshold": {
+              "default": 0.72,
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "fuzzyAutofill": {
+              "default": true,
+              "type": "boolean"
+            },
+            "freezeApproved": {
+              "default": true,
+              "type": "boolean"
+            },
+            "learnFromEdits": {
+              "default": true,
+              "type": "boolean"
+            },
+            "excludePatterns": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "glossary": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "file": {
+              "default": "lingoflow.glossary.json",
+              "type": "string"
+            },
+            "enforce": {
+              "default": true,
+              "type": "boolean"
+            },
+            "matchCase": {
+              "default": false,
+              "type": "boolean"
+            },
+            "mode": {
+              "default": "auto",
+              "type": "string",
+              "enum": [
+                "auto",
+                "protect",
+                "prompt",
+                "enforce"
+              ]
+            }
+          }
+        },
+        "style": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "file": {
+              "default": "lingoflow.style.json",
+              "type": "string"
+            },
+            "enforce": {
+              "default": true,
+              "type": "boolean"
+            }
+          }
+        },
+        "keepPlaceholders": {
+          "default": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "length": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "unit": {
+          "default": "both",
+          "type": "string",
+          "enum": [
+            "px",
+            "chars",
+            "both"
+          ]
+        },
+        "font": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "family": {
+              "default": "system-ui",
+              "type": "string"
+            },
+            "size": {
+              "default": 14,
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "weight": {
+              "default": 400,
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "letterSpacing": {
+              "default": 0,
+              "type": "number"
+            }
+          }
+        },
+        "default": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "max": {
+              "default": 60,
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "min": {
+              "default": 0,
+              "type": "number",
+              "minimum": 0
+            },
+            "hard": {
+              "default": false,
+              "type": "boolean"
+            },
+            "widget": {
+              "default": "label",
+              "type": "string"
+            }
+          }
+        },
+        "rules": {
+          "default": [
+            {
+              "match": "cta.*",
+              "max": 18,
+              "hard": true,
+              "widget": "button"
+            },
+            {
+              "match": "*.tooltip",
+              "max": 120,
+              "widget": "tooltip"
+            },
+            {
+              "match": "*.title",
+              "max": 32,
+              "widget": "heading"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "match": {
+                "type": "string"
+              },
+              "max": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "min": {
+                "type": "number",
+                "minimum": 0
+              },
+              "hard": {
+                "type": "boolean"
+              },
+              "widget": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "match"
+            ]
+          }
+        },
+        "expansion": {
+          "default": {
+            "de": 1.4,
+            "fr": 1.35,
+            "es": 1.3,
+            "ru": 1.35,
+            "zh-CN": 0.7,
+            "ja": 0.8,
+            "ko": 0.85
+          },
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "autofix": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "default": true,
+              "type": "boolean"
+            },
+            "strategies": {
+              "default": [
+                "reflow",
+                "punctuation",
+                "abbreviate",
+                "shorten"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "reflow",
+                  "punctuation",
+                  "abbreviate",
+                  "shorten",
+                  "retranslate"
+                ]
+              }
+            },
+            "maxRounds": {
+              "default": 2,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        }
+      }
+    },
+    "validate": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "placeholders": {
+          "default": true,
+          "type": "boolean"
+        },
+        "icu": {
+          "default": true,
+          "type": "boolean"
+        },
+        "tags": {
+          "default": true,
+          "type": "boolean"
+        },
+        "whitespace": {
+          "default": true,
+          "type": "boolean"
+        },
+        "punctuation": {
+          "default": true,
+          "type": "boolean"
+        },
+        "ellipsis": {
+          "default": true,
+          "type": "boolean"
+        },
+        "cjk": {
+          "default": true,
+          "type": "boolean"
+        },
+        "script": {
+          "default": true,
+          "type": "boolean"
+        },
+        "dnt": {
+          "default": true,
+          "type": "boolean"
+        },
+        "glossary": {
+          "default": true,
+          "type": "boolean"
+        },
+        "consistency": {
+          "default": true,
+          "type": "boolean"
+        },
+        "sameSourceSameTarget": {
+          "default": true,
+          "type": "boolean"
+        },
+        "forbidden": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "severity": {
+          "default": {
+            "length.expansion": "info",
+            "length.wrap": "info",
+            "key.unused": "info",
+            "style.case": "info",
+            "style.formality": "info",
+            "cjk.space": "info",
+            "text.ellipsis": "info",
+            "script.mismatch": "warn"
+          },
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "error",
+              "warn",
+              "info"
+            ]
+          }
+        },
+        "ignore": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "write": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "atomic": {
+          "default": true,
+          "type": "boolean"
+        },
+        "backup": {
+          "default": true,
+          "type": "boolean"
+        },
+        "indent": {
+          "default": 2,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "eol": {
+          "default": "auto",
+          "type": "string",
+          "enum": [
+            "lf",
+            "crlf",
+            "auto"
+          ]
+        },
+        "keepOrder": {
+          "default": true,
+          "type": "boolean"
+        },
+        "sortKeys": {
+          "default": false,
+          "type": "boolean"
+        },
+        "trailingNewline": {
+          "default": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "privacy": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "offlineOnly": {
+          "default": false,
+          "type": "boolean"
+        },
+        "allowNetwork": {
+          "default": true,
+          "type": "boolean"
+        },
+        "redact": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "email",
+              "url",
+              "phone",
+              "credit-card",
+              "ipv4"
+            ]
+          }
+        },
+        "telemetry": {
+          "default": false,
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "report": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "dir": {
+          "default": ".lingoflow/report",
+          "type": "string"
+        },
+        "title": {
+          "default": "LingoFlow Report",
+          "type": "string"
+        },
+        "includePreview": {
+          "default": true,
+          "type": "boolean"
+        },
+        "theme": {
+          "default": "auto",
+          "type": "string",
+          "enum": [
+            "auto",
+            "light",
+            "dark"
+          ]
+        },
+        "failOn": {
+          "default": "error",
+          "type": "string",
+          "enum": [
+            "error",
+            "warn",
+            "none"
+          ]
+        }
+      }
+    },
+    "workDir": {
+      "default": ".lingoflow",
+      "type": "string"
+    }
+  },
+  "title": "LingoFlow configuration",
+  "description": "Configuration for LingoFlow — the code-aware i18n pipeline. See https://github.com/Lives0808/LingoFlow"
+}

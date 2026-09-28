@@ -1,0 +1,39 @@
+{
+  "app": {
+    "title": "LingoFlow デモ",
+    "subtitle": "レイアウトを崩さずに 12 言語をリリース"
+  },
+  "cta": {
+    "save": "変更を保存",
+    "cancel": "キャンセル",
+    "delete": "削除アカウント"
+  },
+  "nav": {
+    "settings": "設定",
+    "profile": "プロフィール",
+    "billing": "Billing"
+  },
+  "form": {
+    "email": "メールアドレス",
+    "required": "This field is 必須"
+  },
+  "items": {
+    "count": "{count, plural, other {# 件}}"
+  },
+  "dialog": {
+    "deleteTitle": "{name} を削除しますか？",
+    "deleteBody": "This action cannot be undone. すべて data for {name} will be permanently removed."
+  },
+  "message": {
+    "welcome": "おかえりなさい、{name} さん！"
+  },
+  "tooltip": {
+    "billing": "Invoices, payment methods and receipts live here."
+  },
+  "legal": {
+    "terms": "By continuing you agree to our <a>Terms of Service</a>."
+  },
+  "debug": {
+    "panel": "Debug panel (never translated)"
+  }
+}

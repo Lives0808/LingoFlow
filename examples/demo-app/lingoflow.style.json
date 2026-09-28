@@ -1,0 +1,9 @@
+{
+  "rules": [
+    { "name": "punctuation.trailing", "value": "never", "locale": "zh-CN", "note": "no trailing period on Chinese UI labels" },
+    { "name": "cjk.fullwidth", "value": "true", "locale": "zh-CN" },
+    { "name": "cjk.latin-space", "value": "true", "locale": "zh-CN" },
+    { "name": "formality", "value": "formal", "locale": "zh-CN" },
+    { "name": "punctuation.ellipsis", "value": "unicode", "locale": "zh-CN" }
+  ]
+}

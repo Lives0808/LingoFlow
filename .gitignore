@@ -1,0 +1,9 @@
+node_modules/
+dist/
+bin/*.mjs
+*.log
+.DS_Store
+
+# LingoFlow runtime artifacts: private memory, engine cache, reports, backups
+.lingoflow/
+*.bak

@@ -1,0 +1,39 @@
+{
+  "app": {
+    "title": "LingoFlow Demo",
+    "subtitle": "Ship 12 languages without breaking the layout"
+  },
+  "cta": {
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "delete": "Delete account"
+  },
+  "nav": {
+    "settings": "Settings",
+    "profile": "Profile",
+    "billing": "Billing"
+  },
+  "form": {
+    "email": "Email address",
+    "required": "This field is required"
+  },
+  "items": {
+    "count": "{count, plural, one {# item} other {# items}}"
+  },
+  "dialog": {
+    "deleteTitle": "Delete {name}?",
+    "deleteBody": "This action cannot be undone. All data for {name} will be permanently removed."
+  },
+  "tooltip": {
+    "billing": "Invoices, payment methods and receipts live here."
+  },
+  "message": {
+    "welcome": "Welcome back, {name}!"
+  },
+  "legal": {
+    "terms": "By continuing you agree to our <a>Terms of Service</a>."
+  },
+  "debug": {
+    "panel": "Debug panel (never translated)"
+  }
+}

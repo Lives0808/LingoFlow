@@ -1,0 +1,39 @@
+{
+  "app": {
+    "title": "LingoFlow Demo",
+    "subtitle": "12 Sprachen ausliefern, ohne das Layout zu zerstören"
+  },
+  "cta": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen Konto"
+  },
+  "nav": {
+    "settings": "Einstellungen",
+    "profile": "Profil",
+    "billing": "Billing"
+  },
+  "form": {
+    "email": "E-Mail-Adresse",
+    "required": "This field is Erforderlich"
+  },
+  "items": {
+    "count": "{count, plural, one {# Element} other {# Elemente}}"
+  },
+  "dialog": {
+    "deleteTitle": "{name} löschen?",
+    "deleteBody": "This action cannot be undone. Alle data for {name} will be permanently removed."
+  },
+  "message": {
+    "welcome": "Willkommen zurück, {name}!"
+  },
+  "tooltip": {
+    "billing": "Invoices, payment methods and receipts live here."
+  },
+  "legal": {
+    "terms": "By continuing you agree to our <a>Terms of Service</a>."
+  },
+  "debug": {
+    "panel": "Debug panel (never translated)"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "name": "lingoflow",
+  "version": "0.1.0",
+  "description": "Code-aware i18n pipeline: read source code, auto-translate locale files in many formats, align locales, validate UI length, write back, and grow a private translation memory + rule base.",
+  "keywords": [
+    "i18n",
+    "l10n",
+    "localization",
+    "translation",
+    "translation-memory",
+    "glossary",
+    "cli",
+    "pseudo-localization",
+    "icu",
+    "gettext"
+  ],
+  "license": "MIT",
+  "author": "Lives0808",
+  "homepage": "https://github.com/Lives0808/LingoFlow",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lives0808/LingoFlow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Lives0808/LingoFlow/issues"
+  },
+  "type": "module",
+  "bin": {
+    "lingoflow": "./bin/lingoflow.mjs",
+    "lf": "./bin/lingoflow.mjs"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "bin",
+    "dist",
+    "schema",
+    "docs",
+    "assets",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "tsx src/bin.ts",
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "test:watch": "node --import tsx --watch --test test/*.test.ts",
+    "clean": "rm -rf dist bin/*.mjs",
+    "prepublishOnly": "npm run clean && npm run build && npm test"
+  },
+  "dependencies": {
+    "commander": "^15.0.0",
+    "fast-glob": "^3.3.3",
+    "picocolors": "^1.1.1",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.28.0",
+    "tsx": "^4.23.0",
+    "typescript": "^5.9.0"
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Lives0808/LingoFlow/main/schema/lingoflow.schema.json",
+  "sourceLocale": "en",
+  "locales": [
+    "en",
+    "zh-CN",
+    "ja",
+    "de",
+    "en-XA"
+  ],
+  "catalogs": [
+    {
+      "path": "locales/{locale}.json",
+      "format": "auto"
+    }
+  ],
+  "code": {
+    "include": [
+      "src/**/*.{ts,tsx,js,jsx}"
+    ],
+    "exclude": [
+      "**/node_modules/**",
+      "**/dist/**"
+    ],
+    "calls": [
+      "t",
+      "i18n.t",
+      "$t",
+      "formatMessage"
+    ],
+    "components": [
+      "Trans",
+      "FormattedMessage"
+    ],
+    "hardcoded": {
+      "mode": "report",
+      "attributes": [
+        "placeholder",
+        "title",
+        "aria-label",
+        "alt",
+        "label"
+      ],
+      "minWords": 2,
+      "minConfidence": 0.75
+    }
+  },
+  "translation": {
+    "engine": "offline",
+    "fallback": [
+      "offline"
+    ],
+    "policy": "missing",
+    "concurrency": 4,
+    "memory": {
+      "path": ".lingoflow/memory",
+      "driver": "auto",
+      "fuzzyThreshold": 0.75,
+      "fuzzyAutofill": true,
+      "freezeApproved": true,
+      "learnFromEdits": true
+    },
+    "glossary": {
+      "file": "lingoflow.glossary.json",
+      "enforce": true,
+      "mode": "auto"
+    },
+    "style": {
+      "file": "lingoflow.style.json",
+      "enforce": true
+    }
+  },
+  "length": {
+    "enabled": true,
+    "unit": "both",
+    "font": {
+      "family": "system-ui",
+      "size": 14,
+      "weight": 400
+    },
+    "default": {
+      "max": 60,
+      "min": 0,
+      "hard": false,
+      "widget": "label"
+    },
+    "rules": [
+      {
+        "match": "cta.*",
+        "max": 18,
+        "hard": true,
+        "widget": "button"
+      },
+      {
+        "match": "nav.*",
+        "max": 24,
+        "widget": "nav"
+      },
+      {
+        "match": "*.tooltip",
+        "max": 120,
+        "widget": "tooltip"
+      },
+      {
+        "match": "app.title",
+        "max": 32,
+        "widget": "heading"
+      }
+    ],
+    "expansion": {
+      "zh-CN": 0.7,
+      "ja": 0.8,
+      "de": 1.4,
+      "en-XA": 1.6
+    },
+    "autofix": {
+      "enabled": true,
+      "strategies": [
+        "reflow",
+        "punctuation",
+        "abbreviate",
+        "shorten"
+      ],
+      "maxRounds": 2
+    }
+  },
+  "validate": {
+    "placeholders": true,
+    "icu": true,
+    "tags": true,
+    "cjk": true,
+    "consistency": true,
+    "sameSourceSameTarget": true,
+    "forbidden": [
+      "lorem ipsum"
+    ],
+    "ignore": {
+      "*": [
+        "debug.*"
+      ]
+    }
+  },
+  "write": {
+    "atomic": true,
+    "backup": true,
+    "indent": 2,
+    "eol": "auto",
+    "keepOrder": true
+  },
+  "privacy": {
+    "offlineOnly": true,
+    "allowNetwork": false,
+    "redact": []
+  },
+  "report": {
+    "dir": ".lingoflow/report",
+    "title": "LingoFlow · demo app",
+    "includePreview": true,
+    "theme": "auto",
+    "failOn": "error"
+  }
+}

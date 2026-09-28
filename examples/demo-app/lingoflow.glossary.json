@@ -1,0 +1,8 @@
+{
+  "terms": [
+    { "source": "LingoFlow", "target": "LingoFlow", "locale": null, "note": "brand name — never translate" },
+    { "source": "Settings", "target": "设置", "locale": "zh-CN" },
+    { "source": "Billing", "target": "账单", "locale": "zh-CN" },
+    { "source": "Save changes", "target": "保存更改", "locale": "zh-CN" }
+  ]
+}
