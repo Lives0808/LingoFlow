@@ -153,6 +153,7 @@ export function registerInspectCommands(program: Command): void {
     .description('Write report.json / report.md / report.sarif / index.html for the current state')
     .option('--locales <list>', 'comma separated locales')
     .option('--open', 'open the HTML report', false)
+    .option('--fail-on <level>', 'error | warn | none (default: none, report never blocks)')
     .option('--json', 'machine readable output')
     .action(async (options: Record<string, unknown>, command: Command) => {
       const globals = globalOptions(command.parent ?? command);
@@ -172,7 +173,7 @@ export function registerInspectCommands(program: Command): void {
         rootDir: loaded.rootDir,
         json: globals.json,
         open: Boolean(options.open),
-        failOn: 'none',
+        failOn: (options.failOn as 'error' | 'warn' | 'none' | undefined) ?? 'none',
       });
       await project.store.close();
       process.exitCode = code;
