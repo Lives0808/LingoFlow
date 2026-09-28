@@ -7,6 +7,18 @@ no WebView, no Node runtime on the device.
 > designers can validate wording, placeholders and UI fit while away from the desk, and the
 > app learns from those reviews on-device.
 
+## Screenshots
+
+| Overview | Editor (live validation) |
+| --- | --- |
+| ![Overview](docs/screenshots/02-overview.png) | ![Editor](docs/screenshots/03-editor.png) |
+
+| UI fit (real font metrics) | Pseudo-locale stress test |
+| --- | --- |
+| ![UI fit](docs/screenshots/04-ui-fit.png) | ![Pseudo-locale](docs/screenshots/05-pseudo-locale.png) |
+
+*(Captured on an API 35 emulator from the signed release APK.)*
+
 ## Features
 
 | Area | What it does |

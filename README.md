@@ -76,6 +76,14 @@ adb install lingoflow-android-0.2.0.apk      # 或直接在手机上点击安装
 
 原生 Kotlin/Compose 应用，无需 Node 运行时：打开项目文件夹即可校验占位符/ICU/CJK 排版、
 用**真实字体度量**测长度与 UI 适配、编辑并回写翻译、冻结已定稿文案、从审校中学习规则。
+
+<p align="center">
+  <img src="android/docs/screenshots/02-overview.png" width="230" alt="Overview">
+  <img src="android/docs/screenshots/03-editor.png" width="230" alt="Editor">
+  <img src="android/docs/screenshots/04-ui-fit.png" width="230" alt="UI fit">
+  <img src="android/docs/screenshots/05-pseudo-locale.png" width="230" alt="Pseudo-locale">
+</p>
+
 详见 [`android/README.md`](android/README.md)。
 
 要求 Node.js ≥ 20.11（Node 22.5+ 会自动启用 SQLite 记忆库，低版本自动降级为 JSONL）。
