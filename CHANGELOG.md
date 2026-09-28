@@ -3,6 +3,47 @@
 All notable changes to LingoFlow are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] — 2026-09-28
+
+Adds **LingoFlow for Android**: a native Kotlin + Jetpack Compose app that shares the CLI's
+configuration, catalog formats and validation rules.
+
+### Added
+
+**Android app (`android/`)**
+- Native Compose UI (no WebView, no Node runtime): overview, issues, editor, UI-fit preview,
+  memory/rule management and settings, with a single state holder (`MainViewModel`).
+- Opens any project folder through the system picker (SAF) or the bundled demo project; reads
+  `lingoflow.config.json` and the same eight catalog formats, preserving comments and key order.
+- **Length & UI fit with real font metrics** (`Paint.measureText` instead of approximations),
+  14 widget presets, glob-matched budgets, per-locale expansion budgets, pixel-accurate overflow
+  detection and a pseudo-locale (+40%) toggle.
+- Full validation matrix on-device: placeholders, ICU structure + CLDR plural categories, HTML
+  tags, whitespace, punctuation, CJK typography, script mismatch, glossary/DNT, consistency and
+  forbidden terms — the same issue codes as the CLI.
+- Translation engines: built-in offline engine (glossary + memory + seed dictionary),
+  pseudo-locale, OpenAI-compatible endpoints (including local Ollama/LM Studio), LibreTranslate
+  and a custom HTTP template. Plans are previewed before anything is written.
+- Anti-rework: approve **and freeze** translations; later runs (even forced) never overwrite them
+  and report the difference instead. `Learn from edits` mines reviewer changes into correction
+  rules, approved copy into style rules and repeated term pairs into glossary candidates.
+- Private SQLite translation memory in app storage, API keys encrypted with an Android Keystore
+  key, `Block every network engine` enforced in code, no telemetry, no accounts.
+- HTML / Markdown / JSON reports written next to the project or shared through the system sheet.
+- 48 JVM unit tests covering the core (parsers, formats, validation, learning, pipeline,
+  demo project) plus a signed-release build in CI.
+
+**Tooling**
+- `android/` Gradle project (AGP 8.13 + Kotlin 2.3 + Compose BOM, minSdk 26, targetSdk 36),
+  committed open-source release keystore for update continuity, `android.yml` and a combined
+  release workflow that ships the APK next to the CLI artifacts.
+
+### Changed
+
+- CLI version bumped to 0.2.0 to keep one product version across platforms.
+- Release workflow now builds and attaches `lingoflow-android-<version>.apk`,
+  `-debug.apk`, the npm tarball, the single-file CLI bundle and checksums.
+
 ## [0.1.0] — 2026-09-28
 
 First public release. 🎉
@@ -45,4 +86,5 @@ First public release. 🎉
 - Single-file bundle (zero runtime dependencies), installable npm tarball and SHA-256 checksums attached to the GitHub release.
 - 39 unit/integration tests covering formats, validation, scanning, memory, rules, fixing and the end-to-end pipeline.
 
+[0.2.0]: https://github.com/Lives0808/LingoFlow/releases/tag/v0.2.0
 [0.1.0]: https://github.com/Lives0808/LingoFlow/releases/tag/v0.1.0

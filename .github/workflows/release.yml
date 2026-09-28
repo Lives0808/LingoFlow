@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g. 0.1.0)'
+        description: 'Version to release (e.g. 0.2.0)'
         required: false
 
 permissions:
@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # ---------- CLI (Node) ----------
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -26,6 +28,26 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+      # ---------- Android app ----------
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platforms;android-36 build-tools;36.0.0'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Android unit tests
+        working-directory: android
+        run: ./gradlew :app:testDebugUnitTest --stacktrace
+
+      - name: Build signed release APK
+        working-directory: android
+        run: ./gradlew :app:assembleRelease :app:assembleDebug --stacktrace
 
       - name: Read version
         id: meta
@@ -40,8 +62,13 @@ jobs:
           cp bin/lingoflow.mjs "release/lingoflow-${{ steps.meta.outputs.version }}.mjs"
           cp bin/lingoflow.mjs release/lingoflow.mjs
           npm pack --pack-destination release
+          cp android/app/build/outputs/apk/release/app-release.apk \
+             "release/lingoflow-android-${{ steps.meta.outputs.version }}.apk"
+          cp android/app/build/outputs/apk/debug/app-debug.apk \
+             "release/lingoflow-android-${{ steps.meta.outputs.version }}-debug.apk"
           cd release
           shasum -a 256 * > checksums.txt
+          ls -la
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -52,4 +79,5 @@ jobs:
           files: |
             release/*.mjs
             release/*.tgz
+            release/*.apk
             release/checksums.txt

@@ -7,3 +7,15 @@ bin/*.mjs
 # LingoFlow runtime artifacts: private memory, engine cache, reports, backups
 .lingoflow/
 *.bak
+
+# Android
+android/.gradle/
+android/.kotlin/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+*.apk
+*.aab
+!android/keystore/*.jks

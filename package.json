@@ -1,7 +1,7 @@
 {
   "name": "lingoflow",
-  "version": "0.1.0",
-  "description": "Code-aware i18n pipeline: read source code, auto-translate locale files in many formats, align locales, validate UI length, write back, and grow a private translation memory + rule base.",
+  "version": "0.2.0",
+  "description": "Code-aware i18n pipeline: read source code, auto-translate locale files in many formats, align locales, validate UI length, write back, and grow a private translation memory + rule base. Ships as a CLI and as a native Android app.",
   "keywords": [
     "i18n",
     "l10n",
@@ -38,14 +38,15 @@
     }
   },
   "files": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "android/README.md",
+    "assets",
     "bin",
     "dist",
-    "schema",
     "docs",
-    "assets",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
+    "schema"
   ],
   "engines": {
     "node": ">=20.11"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Reports are generated in the cache directory before sharing. -->
+    <cache-path name="reports" path="." />
+    <files-path name="projects" path="." />
+</paths>

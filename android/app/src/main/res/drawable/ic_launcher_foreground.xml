@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Two speech bubbles with a swap arrow: "translate between languages". -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outgoing bubble -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M28,30 L60,30 A6,6 0 0 1 66,36 L66,50 A6,6 0 0 1 60,56 L40,56 L32,62 L32,56 L28,56 A6,6 0 0 1 22,50 L22,36 A6,6 0 0 1 28,30 Z" />
+
+    <!-- Swap arrow -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,64 L78,64 L78,60 L86,66 L78,72 L78,68 L52,68 Z" />
+
+    <!-- Incoming bubble -->
+    <path
+        android:fillColor="#A5B4FC"
+        android:pathData="M50,72 L80,72 A6,6 0 0 1 86,78 L86,88 A6,6 0 0 1 80,94 L60,94 L52,100 L52,94 L50,94 A6,6 0 0 1 44,88 L44,78 A6,6 0 0 1 50,72 Z" />
+
+    <!-- Latin "A" -->
+    <path
+        android:fillColor="#4F46E5"
+        android:pathData="M36,38 L40,38 L46,50 L41.8,50 L40.7,47.4 L35.3,47.4 L34.2,50 L30,50 Z M36.6,44 L39.4,44 L38,40.6 Z" />
+</vector>

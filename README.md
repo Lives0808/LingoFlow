@@ -4,7 +4,9 @@
 
 **代码感知的 i18n 流水线：直读源码 · 多格式文案自动翻译 · 多语对齐 · 长度校验 · 回写代码 · 规则沉淀**
 
-*Code-aware i18n pipeline: read your source, translate every locale file, align locales, validate UI length, write back, and grow a private rule base.*
+**桌面 CLI + 原生 Android 应用**（Kotlin / Jetpack Compose）
+
+*Code-aware i18n pipeline — CLI and a native Android app: read your source, translate every locale file, align locales, validate UI length, write back, and grow a private rule base.*
 
 [![CI](https://github.com/Lives0808/LingoFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/Lives0808/LingoFlow/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Lives0808/LingoFlow)](https://github.com/Lives0808/LingoFlow/releases)
@@ -40,6 +42,7 @@ npx --yes ./lingoflow-0.1.0.tgz sync           # 直接用 Release 里的 npm �
 | 人工改过的翻译被下一次机器翻译覆盖 | 审批/冻结机制（防返工），冲突显式告警 |
 | 每次都要重复纠正同类错误 | 从审校差异中**自动学习修正规则**并复用到新文案 |
 | 担心隐私 / 断网 / 内网 | 内置离线引擎，可选本地模型（Argos）、本地 LLM（Ollama/vLLM）、或自定义 API |
+| 审校只能在电脑上做 | 原生 Android 应用：手机随时校验、编辑、冻结，规则在设备上学习 |
 
 ---
 
@@ -62,6 +65,18 @@ git clone https://github.com/Lives0808/LingoFlow.git && cd LingoFlow
 npm install && npm run build
 node bin/lingoflow.mjs --help
 ```
+
+### Android 应用
+
+```bash
+# 从 Release 安装 APK（Android 8.0+，约 12 MB）
+curl -fsSLO https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow-android-0.2.0.apk
+adb install lingoflow-android-0.2.0.apk      # 或直接在手机上点击安装
+```
+
+原生 Kotlin/Compose 应用，无需 Node 运行时：打开项目文件夹即可校验占位符/ICU/CJK 排版、
+用**真实字体度量**测长度与 UI 适配、编辑并回写翻译、冻结已定稿文案、从审校中学习规则。
+详见 [`android/README.md`](android/README.md)。
 
 要求 Node.js ≥ 20.11（Node 22.5+ 会自动启用 SQLite 记忆库，低版本自动降级为 JSONL）。
 > 想用 `npx lingoflow`？包已准备好（`lingoflow-0.1.0.tgz`），发布到 npm registry 后即可直接 `npx`。
@@ -215,6 +230,7 @@ lingoflow preview --serve            # 本地打开 UI 适配预览（真实 DOM
 ## 架构
 
 ```
+android/     原生 Android 应用（Kotlin + Compose，core 无 Android 依赖、可 JVM 单测）
 src/
   core/
     catalog/   8 种语言文件格式读写（注释/键序无损）
@@ -246,6 +262,11 @@ src/
 ```bash
 lingoflow init --preset react && lingoflow sync
 ```
+
+**Android app:** the same config, formats and validation rules in a native Kotlin/Compose app —
+open a project folder, review and edit translations on the go, measure UI fit with real font
+metrics, freeze approved wording, and learn rules from your own edits. Grab
+`lingoflow-android-*.apk` from the latest release.
 
 Privacy first: the built-in engine works offline, local models (Argos), local LLMs (any OpenAI-compatible endpoint on `localhost`), self-hosted LibreTranslate, or DeepL/custom HTTP when you explicitly allow network access. No telemetry.
 
