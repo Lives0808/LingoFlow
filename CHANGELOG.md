@@ -42,7 +42,7 @@ First public release. 🎉
 - HTML, JSON, Markdown and SARIF reports; `--fail-on error|warn|none` for CI gating; XLIFF/CSV/JSON handoff and re-import.
 
 **Distribution**
-- Single-file bundle, npm package and GitHub release artifacts with SHA-256 checksums.
+- Single-file bundle (zero runtime dependencies), installable npm tarball and SHA-256 checksums attached to the GitHub release.
 - 39 unit/integration tests covering formats, validation, scanning, memory, rules, fixing and the end-to-end pipeline.
 
 [0.1.0]: https://github.com/Lives0808/LingoFlow/releases/tag/v0.1.0

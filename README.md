@@ -20,7 +20,8 @@
 `lingoflow sync` —— 扫描代码 → 抽取硬编码文案 → 翻译新增词条 → 对齐多语言 → 校验长度/占位符/ICU/排版 → 自动修复 → 回写代码与语言文件 → 沉淀私有记忆库与规则 → 生成可视化报告。**一条命令，新增方案全流程闭环。**
 
 ```bash
-npx lingoflow sync
+lingoflow sync                        # 全局安装后
+# 或： node lingoflow.mjs sync         # 单文件版
 ```
 
 ![workflow](https://img.shields.io/badge/scan%20→%20translate%20→%20check%20→%20fix%20→%20write%20back%20→%20learn-one%20command-4f46e5)
@@ -43,19 +44,26 @@ npx lingoflow sync
 
 ## 安装
 
+三种方式，任选其一（全部不依赖网络服务）：
+
 ```bash
-# 直接运行（推荐，无需安装）
-npx lingoflow --help
-
-# 或全局安装
-npm install -g lingoflow
-
-# 或使用 Release 里的单文件版本
+# 1) 单文件版（推荐，零依赖，一条 curl 即可）
 curl -fsSL https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow.mjs -o lingoflow.mjs
 node lingoflow.mjs --help
+
+# 2) 从 Release 的 npm 包全局安装
+curl -fsSLO https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow-0.1.0.tgz
+npm install -g ./lingoflow-0.1.0.tgz
+lingoflow --help
+
+# 3) 从源码构建（贡献者）
+git clone https://github.com/Lives0808/LingoFlow.git && cd LingoFlow
+npm install && npm run build
+node bin/lingoflow.mjs --help
 ```
 
 要求 Node.js ≥ 20.11（Node 22.5+ 会自动启用 SQLite 记忆库，低版本自动降级为 JSONL）。
+> 想用 `npx lingoflow`？包已准备好（`lingoflow-0.1.0.tgz`），发布到 npm registry 后即可直接 `npx`。
 
 ---
 
@@ -185,7 +193,7 @@ lingoflow preview --serve            # 本地打开 UI 适配预览（真实 DOM
 ```yaml
 - uses: actions/setup-node@v4
   with: { node-version: 22 }
-- run: npx lingoflow check --fail-on warn
+- run: node lingoflow.mjs check --fail-on warn
 - uses: github/codeql-action/upload-sarif@v3
   with: { sarif_file: .lingoflow/report/report.sarif }
 ```
@@ -235,7 +243,7 @@ src/
 6. **Grow a private knowledge base** — translation memory (SQLite or JSONL), glossary, style rules and **learned correction rules** derived from past reviewer edits, plus approve/freeze protection so approved wording is never overwritten.
 
 ```bash
-npx lingoflow init --preset react && npx lingoflow sync
+lingoflow init --preset react && lingoflow sync
 ```
 
 Privacy first: the built-in engine works offline, local models (Argos), local LLMs (any OpenAI-compatible endpoint on `localhost`), self-hosted LibreTranslate, or DeepL/custom HTTP when you explicitly allow network access. No telemetry.
