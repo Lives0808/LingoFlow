@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.BugReport
@@ -46,7 +48,10 @@ fun DashboardScreen(state: UiState, viewModel: MainViewModel) {
             }
         }
         item {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(
+                Modifier.horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 AssistChip(
                     onClick = { viewModel.runChecks() },
                     label = { Text("Run checks") },
@@ -59,7 +64,7 @@ fun DashboardScreen(state: UiState, viewModel: MainViewModel) {
                 )
                 AssistChip(
                     onClick = { viewModel.exportReport(dev.lingoflow.app.vm.ReportFormat.HTML) },
-                    label = { Text("Report") },
+                    label = { Text("HTML report") },
                     leadingIcon = { Icon(Icons.Default.Description, null, Modifier.size(16.dp)) },
                 )
             }

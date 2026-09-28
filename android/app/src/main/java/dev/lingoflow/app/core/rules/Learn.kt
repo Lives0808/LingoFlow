@@ -57,7 +57,7 @@ object Learn {
                 val from = change.from.trim()
                 val to = change.to.trim()
                 if (from.isEmpty() || to.isEmpty() || from.length > 60 || to.length > 60) continue
-                if (Regex("\\{[^}]*}").containsMatchIn(from) || Regex("\\{[^}]*}").containsMatchIn(to)) continue
+                if (Regex("\\{[^}]*\\}").containsMatchIn(from) || Regex("\\{[^}]*\\}").containsMatchIn(to)) continue
                 if (from.none { it.isLetter() } || to.none { it.isLetter() }) continue
                 val id = "${edit.locale}\u0000$from\u0000$to"
                 val entry = counts.getOrPut(id) { Count(from, to, edit.locale, 0) }

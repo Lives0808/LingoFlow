@@ -11,8 +11,8 @@ object Placeholders {
 
     data class Token(val raw: String, val key: String, val start: Int, val end: Int)
 
-    private val doubleBrace = Regex("\\{\\{\\s*[\\p{L}\\p{N}._-]+\\s*}}")
-    private val dollarBrace = Regex("\\$\\{\\s*[\\p{L}\\p{N}._-]+\\s*}")
+    private val doubleBrace = Regex("\\{\\{\\s*[\\p{L}\\p{N}._-]+\\s*\\}\\}")
+    private val dollarBrace = Regex("\\$\\{\\s*[\\p{L}\\p{N}._-]+\\s*\\}")
     private val printfIndexed = Regex("%\\d+\\$[sdif]")
     private val printfNamed = Regex("%\\((\\w+)\\)[sdif]")
     private val printf = Regex("%[sdif]")

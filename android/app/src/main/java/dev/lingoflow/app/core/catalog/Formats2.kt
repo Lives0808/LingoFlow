@@ -72,7 +72,7 @@ object PoCatalogFormat : CatalogFormat {
 
         val byBase = LinkedHashMap<String, Pair<PoEntry, MutableMap<Int, String>>>()
         for (entry in decoded.entries) {
-            val match = Regex("^(.*)\\[([a-z0-9]+)]$").find(entry.key)
+            val match = Regex("^(.*)\\[([a-z0-9]+)\\]$").find(entry.key)
             val baseKey = match?.groupValues?.get(1) ?: entry.key
             val category = match?.groupValues?.get(2)
             val existing = byBase[baseKey]
@@ -181,7 +181,7 @@ object PoCatalogFormat : CatalogFormat {
                     sawField = true
                 }
                 line.startsWith("msgstr[") -> {
-                    pluralIndex = Regex("^msgstr\\[(\\d+)]").find(line)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                    pluralIndex = Regex("^msgstr\\[(\\d+)\\]").find(line)?.groupValues?.get(1)?.toIntOrNull() ?: 0
                     while (entry.msgstr.size <= pluralIndex) entry.msgstr += ""
                     entry.msgstr[pluralIndex] = readPoValue(line.substringAfter(']'))
                     field = "msgstr"

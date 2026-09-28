@@ -93,8 +93,10 @@ fun EditorScreen(state: UiState, viewModel: MainViewModel) {
                 val sourceEntry = session.sourceEntries[key]
                 val source = sourceEntry?.value.orEmpty()
                 val value = session.valuesFor(locale)[key].orEmpty()
-                val issues = remember(key, value, locale) { viewModel.quickIssues(locale, key, value) }
-                val (lengthIssues, metrics) = remember(key, value, locale) {
+                // `quickIssues` already runs the length checks; metrics come from a
+                // separate call so the row can draw the budget bar.
+                val allIssues = remember(key, value, locale) { viewModel.quickIssues(locale, key, value) }
+                val (_, metrics) = remember(key, value, locale) {
                     LengthCheck.run(
                         key = key,
                         locale = locale,
@@ -106,7 +108,6 @@ fun EditorScreen(state: UiState, viewModel: MainViewModel) {
                         sourceLocale = session.sourceLocale,
                     )
                 }
-                val allIssues = issues + lengthIssues
                 val placeholders = remember(source) { Placeholders.keys(source) }
 
                 Card(

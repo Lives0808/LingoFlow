@@ -58,7 +58,7 @@ fun PreviewScreen(state: UiState, viewModel: MainViewModel) {
             target.isNullOrBlank() -> source
             else -> target
         }
-        val (issues, metrics) = LengthCheck.run(
+        val (_, metrics) = LengthCheck.run(
             key = key,
             locale = locale,
             source = source,
@@ -68,7 +68,7 @@ fun PreviewScreen(state: UiState, viewModel: MainViewModel) {
             entry = entry,
             sourceLocale = session.sourceLocale,
         )
-        PreviewRow(key, source, display, target.isNullOrBlank(), metrics, issues.isNotEmpty(), metrics.px > metrics.containerPx)
+        PreviewRow(key, source, display, target.isNullOrBlank(), metrics, metrics.px > metrics.containerPx)
     }
 
     LazyColumn(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -107,7 +107,6 @@ data class PreviewRow(
     val display: String,
     val missing: Boolean,
     val metrics: dev.lingoflow.app.core.validate.LengthMetrics,
-    val hasIssue: Boolean,
     val overflow: Boolean,
 )
 
