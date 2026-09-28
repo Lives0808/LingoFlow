@@ -1,6 +1,6 @@
 {
   "name": "lingoflow",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Code-aware i18n pipeline: read source code, auto-translate locale files in many formats, align locales, validate UI length, write back, and grow a private translation memory + rule base. Ships as a CLI and as a native Android app.",
   "keywords": [
     "i18n",

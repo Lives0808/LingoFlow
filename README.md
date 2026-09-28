@@ -8,10 +8,13 @@
 
 *Code-aware i18n pipeline — CLI and a native Android app: read your source, translate every locale file, align locales, validate UI length, write back, and grow a private rule base.*
 
-[![CI](https://github.com/Lives0808/LingoFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/Lives0808/LingoFlow/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/Lives0808/LingoFlow)](https://github.com/Lives0808/LingoFlow/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-![Node](https://img.shields.io/badge/node-%3E%3D20.11-brightgreen)
+[![Release](https://img.shields.io/github/v/release/Lives0808/LingoFlow?style=flat-square&color=6366F1&label=release)](https://github.com/Lives0808/LingoFlow/releases)
+[![License](https://img.shields.io/github/license/Lives0808/LingoFlow?style=flat-square&color=6366F1&label=license)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/Lives0808/LingoFlow/ci.yml?style=flat-square&color=6366F1&label=ci)](https://github.com/Lives0808/LingoFlow/actions/workflows/ci.yml)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.11-6366F1?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6366F1?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-6366F1?style=flat-square&logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Android](https://img.shields.io/badge/Android-6366F1?style=flat-square&logo=android&logoColor=white)](https://github.com/Lives0808/LingoFlow/tree/main/android)
 
 </div>
 
@@ -70,8 +73,8 @@ node bin/lingoflow.mjs --help
 
 ```bash
 # 从 Release 安装 APK（Android 8.0+，约 12 MB）
-curl -fsSLO https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow-android-0.2.0.apk
-adb install lingoflow-android-0.2.0.apk      # 或直接在手机上点击安装
+curl -fsSLO https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow-android-0.2.1.apk
+adb install lingoflow-android-0.2.1.apk      # 或直接在手机上点击安装
 ```
 
 原生 Kotlin/Compose 应用，无需 Node 运行时：打开项目文件夹即可校验占位符/ICU/CJK 排版、

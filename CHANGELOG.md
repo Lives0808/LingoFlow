@@ -3,6 +3,15 @@
 All notable changes to LingoFlow are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] — 2026-09-28
+
+Documentation and metadata patch — no runtime changes.
+
+### Changed
+
+- README badges unified with the profile style: release, license, CI and stack in one flat design.
+- Repository description and topics refreshed for consistent positioning across projects.
+
 ## [0.2.0] — 2026-09-28
 
 Adds **LingoFlow for Android**: a native Kotlin + Jetpack Compose app that shares the CLI's
@@ -86,5 +95,6 @@ First public release. 🎉
 - Single-file bundle (zero runtime dependencies), installable npm tarball and SHA-256 checksums attached to the GitHub release.
 - 39 unit/integration tests covering formats, validation, scanning, memory, rules, fixing and the end-to-end pipeline.
 
+[0.2.1]: https://github.com/Lives0808/LingoFlow/releases/tag/v0.2.1
 [0.2.0]: https://github.com/Lives0808/LingoFlow/releases/tag/v0.2.0
 [0.1.0]: https://github.com/Lives0808/LingoFlow/releases/tag/v0.1.0
