@@ -166,7 +166,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
-      - run: npx lingoflow check --fail-on warn
+      - name: Install LingoFlow
+        run: |
+          curl -fsSL -o lingoflow.mjs https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow.mjs
+      - run: node lingoflow.mjs check --fail-on warn
       - if: always()
         uses: actions/upload-artifact@v4
         with:

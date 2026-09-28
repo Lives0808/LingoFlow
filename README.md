@@ -20,8 +20,9 @@
 `lingoflow sync` —— 扫描代码 → 抽取硬编码文案 → 翻译新增词条 → 对齐多语言 → 校验长度/占位符/ICU/排版 → 自动修复 → 回写代码与语言文件 → 沉淀私有记忆库与规则 → 生成可视化报告。**一条命令，新增方案全流程闭环。**
 
 ```bash
-lingoflow sync                        # 全局安装后
-# 或： node lingoflow.mjs sync         # 单文件版
+lingoflow sync                                 # 全局安装后
+node lingoflow.mjs sync                        # 单文件版
+npx --yes ./lingoflow-0.1.0.tgz sync           # 直接用 Release 里的 npm 包
 ```
 
 ![workflow](https://img.shields.io/badge/scan%20→%20translate%20→%20check%20→%20fix%20→%20write%20back%20→%20learn-one%20command-4f46e5)
