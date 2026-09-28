@@ -1,6 +1,8 @@
-import type { HardcodedCandidate, Issue, KeyUsage, ScanResult } from '../core/types';
-import type { LengthMetrics } from '../core/validate/length';
+import type { HardcodedCandidate, Issue, KeyUsage } from '../core/types';
 import type { MemoryStats } from '../core/tm/store';
+
+import type { LengthMetrics } from '../core/validate/length';
+
 
 export interface LocaleReport {
   locale: string;
@@ -85,26 +87,3 @@ export interface RunReport {
   dryRun: boolean;
 }
 
-export function severityRank(severity: Issue['severity']): number {
-  return severity === 'error' ? 0 : severity === 'warn' ? 1 : 2;
-}
-
-export function issueSeverityOf(sample: PreviewSample): 'error' | 'warn' | 'info' | 'ok' {
-  if (sample.overBudget) return sample.severity === 'info' ? 'warn' : sample.severity;
-  return sample.issues.length > 0 ? sample.issues[0]?.severity ?? 'ok' : 'ok';
-}
-
-export function emptyScanSummary(): ScanSummary {
-  return { filesScanned: 0, usages: [], undefinedKeys: [], unusedKeys: [], dynamicKeys: [], hardcoded: [] };
-}
-
-export function scanSummaryFrom(result: ScanResult): ScanSummary {
-  return {
-    filesScanned: result.filesScanned,
-    usages: result.usages,
-    undefinedKeys: [],
-    unusedKeys: [],
-    dynamicKeys: result.dynamicKeys,
-    hardcoded: result.hardcoded,
-  };
-}

@@ -96,16 +96,6 @@ export async function loadProject(options: ProjectOptions): Promise<ProjectConte
   };
 }
 
-export function sourceEntriesOf(project: ProjectContext): Map<string, CatalogEntry> {
-  const entries = new Map<string, CatalogEntry>();
-  for (const file of project.sourceFiles.values()) {
-    for (const entry of file.entries) {
-      if (!entries.has(entry.key)) entries.set(entry.key, entry);
-    }
-  }
-  return entries;
-}
-
 /**
  * Resolves the catalog file for a locale given the *source* catalog path
  * (e.g. `locales/en.json` + `zh-CN` -> `locales/zh-CN.json`).
@@ -346,20 +336,5 @@ function safeJson(value: string): Record<string, unknown> | null {
     return JSON.parse(value) as Record<string, unknown>;
   } catch {
     return null;
-  }
-}
-
-export function ruleKindLabel(kind: RuleKind): string {
-  switch (kind) {
-    case 'glossary':
-      return 'Glossary';
-    case 'correction':
-      return 'Correction';
-    case 'style':
-      return 'Style';
-    case 'dnt':
-      return 'Do not translate';
-    case 'length':
-      return 'Length';
   }
 }

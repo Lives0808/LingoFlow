@@ -1,6 +1,6 @@
 import type { HardcodedCandidate, KeyUsage } from '../types';
-import { looksLikeUiCopy, escapeRegExp, slugify } from '../utils/text';
-import { isUiAttribute } from '../utils/text';
+import { looksLikeUiCopy, slugify } from '../utils/text';
+
 import { positionAt, tokenize, type Token } from './tokenizer';
 
 export interface ScanOptions {
@@ -269,9 +269,3 @@ function safeRegex(pattern: string): RegExp | null {
 function matchesAny(regexes: RegExp[], value: string): boolean {
   return regexes.some((regex) => regex.test(value));
 }
-
-export function isUiCopyAttribute(attribute: string): boolean {
-  return isUiAttribute(attribute);
-}
-
-export { escapeRegExp };

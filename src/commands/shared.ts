@@ -49,10 +49,6 @@ export function relative(rootDir: string, filePath: string): string {
   return value.split(path.sep).join('/');
 }
 
-export function colorFor(severity: Severity): (text: string) => string {
-  return (text: string) => text;
-}
-
 export function printIssueSummary(issues: Issue[], rootDir: string): void {
   const summary = summarizeIssues(issues);
   if (issues.length === 0) {
@@ -156,10 +152,6 @@ export function requireNonEmpty(value: string | undefined, what: string, hint?: 
     throw new LingoFlowError(`${what} is required`, { code: 'MISSING_ARGUMENT', hint });
   }
   return value;
-}
-
-export function severityColor(severity: Severity): 'red' | 'yellow' | 'cyan' {
-  return severity === 'error' ? 'red' : severity === 'warn' ? 'yellow' : 'cyan';
 }
 
 export interface FinishOptions {

@@ -517,8 +517,3 @@ export function summarizeResults(results: JobResult[]): {
   return { translated, fromMemory, fixed, changed, issues };
 }
 
-export { fileKeyFor as jobLocaleKey };
-
-export function fileKeyFor(locale: string, filePath: string): string {
-  return `${locale}\u0000${filePath}`;
-}

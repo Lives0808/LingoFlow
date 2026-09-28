@@ -5,7 +5,6 @@ import { LingoFlowError } from '../errors';
 import { exists, normalizePath, readText, relativeTo, resolveFrom, writeAtomic, type WriteResult } from '../utils/fsx';
 import { sha256 } from '../utils/hash';
 import { detectEol, detectFormat, getFormat, type FormatContext } from './formats/index';
-import { displayKey } from './keys';
 
 export type { CatalogTarget };
 
@@ -195,24 +194,4 @@ export function alignCatalog(source: CatalogFile, target: CatalogFile): Alignmen
     sourceTotal: sourceKeys.length,
     coverage: sourceKeys.length === 0 ? 1 : translated / sourceKeys.length,
   };
-}
-
-export function formatKeyForDisplay(key: string): string {
-  return displayKey(key);
-}
-
-export function keySetOf(file: CatalogFile | undefined): Set<string> {
-  return new Set(file?.entries.map((entry) => entry.key) ?? []);
-}
-
-export function entryAt(file: CatalogFile | undefined, key: string): CatalogEntry | undefined {
-  return file?.index.get(key);
-}
-
-export function catalogRelativePath(file: CatalogFile, rootDir: string): string {
-  return relativeTo(rootDir, file.path);
-}
-
-export function catalogBasename(file: CatalogFile): string {
-  return path.basename(file.path);
 }

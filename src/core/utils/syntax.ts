@@ -1,5 +1,4 @@
 import { extractPlaceholders } from '../validate/placeholders';
-import { extractTags } from '../validate/tags';
 
 export interface MaskedSyntax {
   /** Text with placeholders and tags replaced by invisible sentinels. */
@@ -43,12 +42,4 @@ export function maskSyntax(text: string): MaskedSyntax {
 export function withMaskedSyntax(text: string, transform: (value: string) => string): string {
   const masked = maskSyntax(text);
   return masked.restore(transform(masked.text));
-}
-
-/** Exposes the tag ranges for callers that need offsets (previews, reports). */
-export function tagRangesOf(text: string): Array<[number, number]> {
-  return extractTags(text).map((tag) => {
-    const start = text.indexOf(tag.raw);
-    return [start, start + tag.raw.length] as [number, number];
-  });
 }

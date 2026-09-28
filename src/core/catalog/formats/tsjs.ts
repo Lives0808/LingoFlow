@@ -1,5 +1,5 @@
 import type { CatalogEntry, DecodedCatalog } from '../../types';
-import { findObjectStart, nodeToValue, parseJsonish, serializeJsonish, type JsonishNode } from './jsonish';
+import { findObjectStart, nodeToValue, parseJsonish, serializeJsonish } from './jsonish';
 import { applyEol, type CatalogFormat, type FormatContext } from './format';
 
 interface TsMeta {
@@ -101,9 +101,3 @@ function detectQuote(text: string, objectStart: number): '"' | "'" {
   const single = (segment.match(/'/gu) ?? []).length;
   return single > double * 2 ? "'" : '"';
 }
-
-export function encodeObjectLiteral(value: unknown, options: { indent: number; quote?: '"' | "'" }): string {
-  return serializeJsonish(value, { indent: options.indent, quote: options.quote ?? '"', eol: '\n' });
-}
-
-export type { JsonishNode };

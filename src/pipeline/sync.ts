@@ -8,7 +8,8 @@ import { mergeValues, saveCatalog } from '../core/catalog/catalog';
 import type { ProjectContext } from './context';
 import { analyzeLocales, type Analysis } from './analyze';
 import { compareKeyCoverage, scanProject } from './scan';
-import { collectValues, fileKeyFor, planJobs, runJobs, summarizeResults } from '../core/translate/planner';
+import { collectValues, planJobs, runJobs, summarizeResults } from '../core/translate/planner';
+
 import { learnCorrectionsFromEdits, learnGlossaryFromPairs, learnStylesFromEntries } from '../core/rules/learn';
 import { extractHardcoded, type ExtractResult } from './extract';
 import { sha256 } from '../core/utils/hash';
@@ -292,7 +293,6 @@ export async function runSync(options: SyncOptions): Promise<SyncResult> {
     });
   }
   void rulesBefore;
-  void fileKeyFor;
   return { report, analysis, extracted, written };
 }
 

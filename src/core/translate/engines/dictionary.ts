@@ -93,6 +93,3 @@ export const SEED_DICTIONARY: Record<string, Record<string, string>> = {
   'try again': { 'zh-CN': '请重试', 'zh-TW': '請重試', ja: '再試行してください', ko: '다시 시도하세요', de: 'Bitte erneut versuchen', fr: 'Veuillez réessayer', es: 'Inténtalo de nuevo', ru: 'Повторите попытку' },
   'are you sure': { 'zh-CN': '确定吗', 'zh-TW': '確定嗎', ja: 'よろしいですか', ko: '확실합니까', de: 'Sind Sie sicher', fr: 'Êtes-vous sûr', es: '¿Estás seguro?', ru: 'Вы уверены?' },
 };
-
-/** Words that carry structure and must be preserved as-is. */
-export const STRUCTURAL_WORDS = new Set(['the', 'a', 'an', 'of', 'to']);
