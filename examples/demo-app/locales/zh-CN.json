@@ -15,23 +15,23 @@
   },
   "form": {
     "email": "邮箱地址",
-    "required": ""
+    "required": "This field is 必填"
   },
   "items": {
-    "count": "{数量, plural, other {# 项}}"
+    "count": "{数量, plural, other {# 项}} {count}"
   },
   "dialog": {
     "deleteTitle": "删除 {name}？",
-    "deleteBody": "此操作无法撤销。{name} 的所有数据将被永久删除，包括历史记录和关联文件。"
+    "deleteBody": "此操作无法撤销。{name} 的所有数据将被永久删除，包括历史记录和关联文件"
   },
   "tooltip": {
-    "billing": "发票、支付方式和收据都在这里。"
+    "billing": "发票、支付方式和收据都在这里"
   },
   "message": {
     "welcome": "Welcome back, {name}!"
   },
   "legal": {
-    "terms": "继续即表示您同意我们的 <a>服务条款</a>。"
+    "terms": "继续即表示您同意我们的 <a>服务条款</a>"
   },
   "debug": {
     "panel": "调试面板"

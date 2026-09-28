@@ -54,7 +54,7 @@
     "dev": "tsx src/bin.ts",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test test/*.test.ts",
+    "test": "node scripts/test.mjs",
     "test:watch": "node --import tsx --watch --test test/*.test.ts",
     "clean": "rm -rf dist bin/*.mjs",
     "prepublishOnly": "npm run clean && npm run build && npm test"

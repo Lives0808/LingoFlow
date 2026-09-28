@@ -43,9 +43,15 @@ jobs:
         run: |
           node ../../bin/lingoflow.mjs doctor
           node ../../bin/lingoflow.mjs scan
-          node ../../bin/lingoflow.mjs sync --dry-run
-          node ../../bin/lingoflow.mjs sync
-          node ../../bin/lingoflow.mjs report
+          node ../../bin/lingoflow.mjs sync --dry-run --fail-on none
+          node ../../bin/lingoflow.mjs sync --fail-on none
+          node ../../bin/lingoflow.mjs report --fail-on none
+      # The offline engine keeps proper nouns verbatim, so this gate blocks on
+      # hard errors (lost placeholders, broken ICU, hard length budgets) only.
+      - name: Gate on the demo's newly translated locales
+        working-directory: examples/demo-app
+        run: |
+          node ../../bin/lingoflow.mjs check --locales ja,de --fail-on error
       - name: Validate the generated catalogs
         working-directory: examples/demo-app
         run: |

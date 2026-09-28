@@ -25,7 +25,11 @@ What the fixture contains on purpose:
 | `lingoflow.glossary.json` / `lingoflow.style.json` | brand term protection, Chinese typography and formality |
 
 The config sets `"privacy": { "offlineOnly": true }`, so the demo runs entirely
-on the built-in offline engine — no network, no keys.
+on the built-in offline engine — no network, no keys. The built-in engine is a
+dictionary/TM composer: short labels come out right, longer sentences stay
+partially untranslated (and are reported as warnings, never silently accepted).
+Pass `--fail-on none` when running the demo pipeline in scripts, since the
+fixture intentionally contains a broken ICU string to demonstrate validation.
 
 Everything LingoFlow creates lives in `.lingoflow/` (SQLite/JSONL memory, engine
 cache, reports, backups) and is git-ignored.
