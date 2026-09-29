@@ -2,288 +2,123 @@
 
 # LingoFlow
 
-**代码感知的 i18n 流水线：直读源码 · 多格式文案自动翻译 · 多语对齐 · 长度校验 · 回写代码 · 规则沉淀**
-
-**桌面 CLI + 原生 Android 应用**（Kotlin / Jetpack Compose）
-
-*Code-aware i18n pipeline — CLI and a native Android app: read your source, translate every locale file, align locales, validate UI length, write back, and grow a private rule base.*
+**Privacy-first cross-platform translation workflow — build your own terminology corpus.**
+**隐私优先的跨平台翻译工作流，搭建属于你的专属术语库。**
 
 [![Release](https://img.shields.io/github/v/release/Lives0808/LingoFlow?style=flat-square&color=6366F1&label=release)](https://github.com/Lives0808/LingoFlow/releases)
 [![License](https://img.shields.io/github/license/Lives0808/LingoFlow?style=flat-square&color=6366F1&label=license)](LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/Lives0808/LingoFlow/ci.yml?style=flat-square&color=6366F1&label=ci)](https://github.com/Lives0808/LingoFlow/actions/workflows/ci.yml)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.11-6366F1?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6366F1?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![Kotlin](https://img.shields.io/badge/Kotlin-6366F1?style=flat-square&logo=kotlin&logoColor=white)](https://kotlinlang.org)
-[![Android](https://img.shields.io/badge/Android-6366F1?style=flat-square&logo=android&logoColor=white)](https://github.com/Lives0808/LingoFlow/tree/main/android)
+[![KMP](https://img.shields.io/badge/Kotlin_Multiplatform-2.3-6366F1?style=flat-square&logo=kotlin&logoColor=white)](https://kotlinlang.org/docs/multiplatform.html)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose_Multiplatform-1.10-6366F1?style=flat-square)](https://www.jetbrains.com/lp/compose-multiplatform/)
+[![Platforms](https://img.shields.io/badge/platforms-Android_·_macOS_·_Windows_·_Linux-6366F1?style=flat-square)](#安装)
+[![CI](https://github.com/Lives0808/LingoFlow/actions/workflows/kmp.yml/badge.svg)](https://github.com/Lives0808/LingoFlow/actions/workflows/kmp.yml)
 
 </div>
 
 ---
 
-## 一句话
+## 两个产品，一套理念
 
-`lingoflow sync` —— 扫描代码 → 抽取硬编码文案 → 翻译新增词条 → 对齐多语言 → 校验长度/占位符/ICU/排版 → 自动修复 → 回写代码与语言文件 → 沉淀私有记忆库与规则 → 生成可视化报告。**一条命令，新增方案全流程闭环。**
-
-```bash
-lingoflow sync                                 # 全局安装后
-node lingoflow.mjs sync                        # 单文件版
-npx --yes ./lingoflow-0.1.0.tgz sync           # 直接用 Release 里的 npm 包
-```
-
-![workflow](https://img.shields.io/badge/scan%20→%20translate%20→%20check%20→%20fix%20→%20write%20back%20→%20learn-one%20command-4f46e5)
-
----
-
-## 为什么需要它
-
-| 痛点 | LingoFlow 的做法 |
-| --- | --- |
-| 语言文件散落在 JSON / YAML / PO / ARB / .strings / CSV / TS 里 | 8 种格式统一读写，注释与键序原样保留 |
-| 新方案上线前没人知道文案会不会溢出按钮 | 按字体度量估算 px / 字符数，内置 14 类控件预算，模拟 UI 逐条渲染并真实测量 |
-| 翻译完了才发现占位符丢了、ICU 复数写错 | 占位符集合比对、ICU 结构校验、CLDR 复数类别校验、HTML 标签配对 |
-| 同一个英文词被翻成两种说法 | 一致性校验 + 术语表强制生效 |
-| 人工改过的翻译被下一次机器翻译覆盖 | 审批/冻结机制（防返工），冲突显式告警 |
-| 每次都要重复纠正同类错误 | 从审校差异中**自动学习修正规则**并复用到新文案 |
-| 担心隐私 / 断网 / 内网 | 内置离线引擎，可选本地模型（Argos）、本地 LLM（Ollama/vLLM）、或自定义 API |
-| 审校只能在电脑上做 | 原生 Android 应用：手机随时校验、编辑、冻结，规则在设备上学习 |
-
----
-
-## 安装
-
-三种方式，任选其一（全部不依赖网络服务）：
-
-```bash
-# 1) 单文件版（推荐，零依赖，一条 curl 即可）
-curl -fsSL https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow.mjs -o lingoflow.mjs
-node lingoflow.mjs --help
-
-# 2) 从 Release 的 npm 包全局安装
-curl -fsSLO https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow-0.1.0.tgz
-npm install -g ./lingoflow-0.1.0.tgz
-lingoflow --help
-
-# 3) 从源码构建（贡献者）
-git clone https://github.com/Lives0808/LingoFlow.git && cd LingoFlow
-npm install && npm run build
-node bin/lingoflow.mjs --help
-```
-
-### Android 应用
-
-```bash
-# 从 Release 安装 APK（Android 8.0+，约 12 MB）
-curl -fsSLO https://github.com/Lives0808/LingoFlow/releases/latest/download/lingoflow-android-0.2.1.apk
-adb install lingoflow-android-0.2.1.apk      # 或直接在手机上点击安装
-```
-
-原生 Kotlin/Compose 应用，无需 Node 运行时：打开项目文件夹即可校验占位符/ICU/CJK 排版、
-用**真实字体度量**测长度与 UI 适配、编辑并回写翻译、冻结已定稿文案、从审校中学习规则。
-
-<p align="center">
-  <img src="android/docs/screenshots/02-overview.png" width="230" alt="Overview">
-  <img src="android/docs/screenshots/03-editor.png" width="230" alt="Editor">
-  <img src="android/docs/screenshots/04-ui-fit.png" width="230" alt="UI fit">
-  <img src="android/docs/screenshots/05-pseudo-locale.png" width="230" alt="Pseudo-locale">
-</p>
-
-详见 [`android/README.md`](android/README.md)。
-
-要求 Node.js ≥ 20.11（Node 22.5+ 会自动启用 SQLite 记忆库，低版本自动降级为 JSONL）。
-> 想用 `npx lingoflow`？包已准备好（`lingoflow-0.1.0.tgz`），发布到 npm registry 后即可直接 `npx`。
-
----
-
-## 快速开始
-
-```bash
-cd your-app
-lingoflow init --preset react        # 生成配置 + 术语表 + 风格规则 + 语言文件
-lingoflow doctor                     # 检查环境、语言文件、引擎可用性
-lingoflow scan                       # 代码里用了哪些 key？哪些是硬编码？
-lingoflow sync --dry-run             # 预览所有改动，不落盘
-lingoflow sync                       # 一键：翻译 + 校验 + 修复 + 回写 + 学习
-lingoflow preview --serve            # 本地打开 UI 适配预览（真实 DOM 溢出检测）
-```
-
-`init` 支持预设：`react` / `vue` / `flutter` / `ios` / `gettext` / `web` / `minimal`。
-
-### 命令总览
-
-| 命令 | 作用 |
-| --- | --- |
-| `sync` | 一键全流程（扫描/抽取/翻译/修复/校验/回写/学习/报告） |
-| `translate` | 只做翻译与回写 |
-| `check` | 只做校验，`--fail-on warn` 可直接做 CI 门禁 |
-| `fix` | 应用确定性修复（换行、标点、间距、占位符、超长适配） |
-| `align` | 多语对齐：报告缺漏、`--fill` 补齐、`--prune` 清理 |
-| `scan` | 源码扫描：缺失 key、未使用 key、动态 key、硬编码文案 |
-| `extract` | 把硬编码文案换成 `t('key')` 并写入源语言文件 |
-| `preview` | 生成 UI 适配预览，`--serve` 本地实时刷新 |
-| `report` | 输出 `index.html` / `report.json` / `report.md` / `report.sarif` |
-| `memory` | 私有翻译记忆库：list / add / approve / freeze / stats / export / import |
-| `rules` | 规则库：glossary / correction / style / dnt，支持 `learn` 与 `export` |
-| `engines` | 查看各引擎就绪状态 |
-| `export` / `import` | XLIFF / CSV / JSON 交付给译者并回灌 |
-| `watch` | 监听源码与语言文件，自动增量同步 |
-
----
-
-## 核心能力
-
-### 1. 直读代码，双向回写
-
-- 识别 `t()`、`i18n.t()`、`$t()`、`formatMessage({ id })`、`<Trans i18nKey>`、`<FormattedMessage id>` 等调用（可配置）
-- 扫描 JSX 文本、`placeholder` / `title` / `aria-label` 等 UI 属性里的**硬编码文案**
-- `lingoflow extract --write` 直接改成 `t('key')` 并写入源语言文件，**从源头止血**
-
-### 2. 多格式语言文件
-
-`JSON / JSON5 / YAML / .properties / .po (gettext) / .arb (Flutter) / .strings (Apple) / CSV / TS-JS 模块`
-
-读写均**保留注释、键顺序、缩进、换行风格**；多语言 CSV 只更新本语言那一列。
-
-### 3. 翻译引擎：隐私可选
-
-| 引擎 | 位置 | 说明 |
+| | **LingoFlow App** | **LingoFlow CLI** |
 | --- | --- | --- |
-| `offline` | 本地 | 内置引擎：术语表 + 记忆库 + 种子词典，零网络，断网可用 |
-| `pseudo` | 本地 | 伪本地化（+40% 膨胀、重音字符），**上线前压测布局** |
-| `argos` | 本地 | Argos Translate 本地神经模型，纯离线 |
-| `openai` | 本地/远程 | 任意 OpenAI 兼容端点；指向 `localhost` 即为本地 LLM（Ollama / LM Studio / vLLM） |
-| `libretranslate` | 自托管 | 内网部署，数据不出内网 |
-| `deepl` | 远程 | 欧洲语系质量最佳 |
-| `custom` | 任意 | 模板化 HTTP，接自家翻译服务 |
+| 面向 | **文档翻译**：Markdown / DOCX / PDF / 字幕 / 图片 | **代码 i18n**：源码里的 `t('key')` 与语言文件 |
+| 形态 | Kotlin Multiplatform：Android + macOS + Windows + Linux，一套 Compose UI | Node.js 命令行 + 8 种语言文件格式 |
+| 共同点 | **本地存储 · 自带 API Key · 项目化管理 · 术语与语料沉淀 · 防返工** | 同左 |
 
-`privacy.offlineOnly: true` 会直接拒绝任何联网引擎，从机制上保证数据不外发；`privacy.redact` 可在发送前屏蔽邮箱/URL/电话等。
-
-### 4. 长度与 UI 适配合规
-
-- 按字体（family/size/weight）估算 **px 宽度**与字符数，内置 `button / label / input / heading / nav / menu / list / tooltip / toast / badge / tab …` 预算
-- 规则匹配任意粒度：`cta.*`、`*.tooltip`、`key.title`
-- 语言膨胀预算：`de: 1.4`、`zh-CN: 0.7`…
-- 超长时按策略自动适配：`reflow → punctuation → abbreviate → shorten`，`hard` 预算仍超标则报错交人工
-- 报告里用**真实 DOM 测量** `scrollWidth > clientWidth`，把"到底会不会溢出"变成事实
-- 伪本地化预览：**翻译之前**就能看到布局问题
-
-### 5. 校验矩阵（CI 可门禁）
-
-占位符缺失/多余 · ICU 结构 · CLDR 复数类别 · HTML 标签配对与属性 · 首尾空白 · 重复空格 · 换行数量 · 省略号 · CJK 全角标点 · CJK/拉丁空格 · 脚本错配（德语里混中文） · 术语未生效 · 免翻译词被改 · 同源不同译 · 禁用词 · 大小写风格 · 长度/膨胀/换行 · 冻结保护 · key 未定义/未使用。
-
-### 6. 沉淀私有数据库与规则（防返工）
-
-- **翻译记忆库（TM）**：SQLite（`node:sqlite`）或 JSONL，精确 + 模糊匹配；记录引擎、置信度、来源 key、审批与冻结状态
-- **术语表（glossary）**、**风格规则（style）**、**修正规则（correction）**、**免翻译（dnt）**统一存入同一私有库，也可导出为可进 Git 的 `lingoflow.glossary.json` / `lingoflow.style.json`
-- `lingoflow rules learn`：从**审校差异**中学习修正规则（例：把人改过的 `登入 → 登录` 变成规则），下次自动应用
-- `lingoflow glossary learn`：从历史翻译中挖掘高频一致的术语对
-- **审批/冻结**：`memory approve --freeze` 之后，任何自动流程都不会覆盖（连 `--force` 也不行），仅在发现差异时显式告警
-
-### 7. 报告与集成
-
-`index.html`（可视化，含模拟 UI 与伪本地化）/ `report.json` / `report.md` / `report.sarif`（GitHub Code Scanning 直接标注到文件）。
+> ✅ **本地存储**（纯 JSON 文件，可 git、可拷贝）✅ **自有 API Key**（无公共密钥、无中转服务、无遥测）
+> ✅ **项目化管理**（每个项目独立术语/语料/词汇/文档）✅ **术语记忆**（强制匹配 + 人工修正自动入库）
 
 ---
 
-## 配置示例
+## LingoFlow App：翻译工作流
 
-```jsonc
-{
-  "$schema": "https://raw.githubusercontent.com/Lives0808/LingoFlow/main/schema/lingoflow.schema.json",
-  "sourceLocale": "en",
-  "locales": ["en", "zh-CN", "ja", "de", "en-XA"],
-  "catalogs": [{ "path": "locales/{locale}.json", "format": "auto" }],
-  "translation": {
-    "engine": "offline",
-    "policy": "missing",
-    "memory": { "driver": "auto", "fuzzyThreshold": 0.75, "freezeApproved": true, "learnFromEdits": true },
-    "glossary": { "file": "lingoflow.glossary.json", "mode": "auto" }
-  },
-  "length": {
-    "unit": "both",
-    "font": { "family": "system-ui", "size": 14, "weight": 400 },
-    "default": { "max": 60, "widget": "label" },
-    "rules": [{ "match": "cta.*", "max": 18, "hard": true, "widget": "button" }],
-    "expansion": { "de": 1.4, "zh-CN": 0.7 }
-  },
-  "validate": { "placeholders": true, "icu": true, "tags": true, "cjk": true, "consistency": true },
-  "privacy": { "offlineOnly": true, "allowNetwork": false },
-  "report": { "failOn": "error" }
-}
-```
+| 项目管理 | 文档导入 |
+| --- | --- |
+| ![projects](app/docs/screenshots/android-projects.png) | ![documents](app/docs/screenshots/android-documents.png) |
 
-完整字段说明见 [`docs/configuration.md`](docs/configuration.md)。
+| 双语对照（原文/译文并排，术语高亮） | 本地术语库 |
+| --- | --- |
+| ![bilingual](app/docs/screenshots/android-bilingual.png) | ![terms](app/docs/screenshots/android-terms.png) |
 
----
+> 截图取自 Android 模拟器上真实运行的签名构建；同一套 Compose UI 也运行在 macOS / Windows / Linux 桌面端。
 
-## CI 集成
+### 核心能力
 
-```yaml
-- uses: actions/setup-node@v4
-  with: { node-version: 22 }
-- run: node lingoflow.mjs check --fail-on warn
-- uses: github/codeql-action/upload-sarif@v3
-  with: { sarif_file: .lingoflow/report/report.sarif }
-```
+- **项目化管理**：新建「雅思阅读」「开源项目 README」等项目，各自保存术语、上下文记忆、平行语料与词汇本
+- **上下文记忆**：同一份文档翻译时，模型会收到前几段的原文与译文 + 术语表 + 你自己的历史译法，专业名词前后一致
+- **双语对照视图**：原文与译文并排，逐段编辑；桌面端悬浮、手机端点击查看 AI 释义；手动改过的段落自动「冻结」，后续自动翻译不再覆盖
+- **本地术语库**：手动添加 + **自动提取**（大小写短语/缩写/CJK 滑窗 + 频次打分），翻译时**强制匹配**，双语视图内高亮
+- **平行语料库**：每一次人工修正都自动入库，之后遇到相似句子优先复用**你自己的译法**（阈值可调）
+- **多模型 + 自有 Key**：内置离线引擎（零配置）/ OpenAI 兼容 / DeepSeek / 自定义端点 / 本地 Ollama；`Block every network engine` 在代码层强制
+- **文档导入导出**：Markdown / TXT / SRT / DOCX / PDF（尽力提取）→ 双语 Markdown、纯译文、CSV、JSON、SRT、可打印 HTML（→PDF）
+- **图片 OCR**（Android）：拍照或相册 → 裁剪/擦除 → 端上 ML Kit 识别（中日韩+拉丁）→ 直接翻译
+- **语言润色**：英文改写、学术书面化、精简
+- **双语词汇本**：一键收藏生词（含例句），导出 CSV / Anki TSV
+- **体验**：深色/浅色主题、进度提示与友好报错、桌面快捷键（⌘1..5 切页、⌘T 翻译、⌘O 导入、⌘E 提取术语、⌘K 术语库）
 
-`--fail-on error|warn|none` 控制退出码；SARIF 让问题直接出现在 PR 的 Files changed 里。
-
----
-
-## 安全与隐私
-
-- 默认 `offline`：**任何内容都不离开本机**
-- 未配置 `privacy.allowNetwork` 或开启 `offlineOnly` 时，联网引擎会被直接拒绝
-- API Key 只从环境变量读取，**从不写入磁盘**
-- 无遥测、无回传、无远端依赖；报告是本地静态文件
-
----
-
-## 架构
-
-```
-android/     原生 Android 应用（Kotlin + Compose，core 无 Android 依赖、可 JVM 单测）
-src/
-  core/
-    catalog/   8 种语言文件格式读写（注释/键序无损）
-    code/      JS/TS/JSX 词法分析、i18n 调用扫描、代码回写
-    translate/ 引擎适配层 + 编排器（记忆库 → 模糊 → 引擎 → 术语 → 修复 → 校验）
-    validate/  占位符 / ICU / 标签 / 排版 / 长度 / 一致性
-    fix/       换行、标点、CJK 排版、缩写适配
-    length/    字体度量与预算
-    rules/     术语、风格、修正规则与自动学习
-    tm/        SQLite / JSONL 双驱动记忆库
-  pipeline/    scan · extract · plan · sync · check · align
-  report/      HTML / JSON / Markdown / SARIF
-  commands/    CLI 命令层
-```
-
----
-
-## English
-
-**LingoFlow is a code-aware i18n pipeline.** Point it at a repository and it will:
-
-1. **Read your code** — find `t()` / `<Trans>` usages, missing keys, unused keys and hardcoded UI copy.
-2. **Translate every locale file** — JSON, JSON5, YAML, `.properties`, gettext `.po`, Flutter `.arb`, Apple `.strings`, CSV and TS/JS modules, with comments and key order preserved.
-3. **Align locales** — report and fill missing keys, prune stale ones, keep one canonical order.
-4. **Validate before it hurts** — placeholders, ICU structure, CLDR plural categories, HTML tags, CJK typography, terminology consistency and **UI length budgets measured in pixels** for 14 widget types.
-5. **Write back** — to locale files *and* to your source code (`lingoflow extract --write` turns hardcoded strings into keys).
-6. **Grow a private knowledge base** — translation memory (SQLite or JSONL), glossary, style rules and **learned correction rules** derived from past reviewer edits, plus approve/freeze protection so approved wording is never overwritten.
+### 安装
 
 ```bash
-lingoflow init --preset react && lingoflow sync
+# Android（8.0+，约 33 MB）
+adb install lingoflow-android-0.3.0.apk
+
+# macOS / Windows / Linux
+# LingoFlow-0.3.0.dmg · LingoFlow-0.3.0.msi · lingoflow_0.3.0_amd64.deb
 ```
 
-**Android app:** the same config, formats and validation rules in a native Kotlin/Compose app —
-open a project folder, review and edit translations on the go, measure UI fit with real font
-metrics, freeze approved wording, and learn rules from your own edits. Grab
-`lingoflow-android-*.apk` from the latest release.
+### 开发
 
-Privacy first: the built-in engine works offline, local models (Argos), local LLMs (any OpenAI-compatible endpoint on `localhost`), self-hosted LibreTranslate, or DeepL/custom HTTP when you explicitly allow network access. No telemetry.
-
-Docs: [`docs/engines.md`](docs/engines.md) · [`docs/configuration.md`](docs/configuration.md) · [`docs/workflow.md`](docs/workflow.md)
+```bash
+cd app
+./gradlew :jvmCore:test :shared:desktopTest   # 领域层测试（文档解析/术语/语料/翻译编排）
+./gradlew :desktopApp:run                     # 桌面端
+./gradlew :androidApp:assembleDebug           # Android
+./gradlew :desktopApp:packageDmg              # 对应平台的安装包
+```
 
 ---
+
+## ⚠️ Limitations（坦诚版）
+
+- **PDF 提取是尽力而为**：自写解析器（FlateDecode + ToUnicode CMap），多栏/表格/旋转文字会串行或丢行；**扫描件 PDF 无文本层，必须走 OCR**。
+- **DOCX 只取正文段落**：忽略表格、文本框、图片、批注与页眉页脚；复杂排版建议先转 Markdown。
+- **桌面 OCR 依赖外部 Tesseract**（不静默下载模型）；Android 为端上 ML Kit，开箱即用。
+- **PDF 导出 = 打印到 PDF**：生成自包含 HTML 后用浏览器打印；不内嵌 CJK 字体。
+- **离线引擎质量有限**：术语表 + 语料 + 种子词典的组合，长句翻译一般；需要模型质量请填自己的 Key。
+- **上下文记忆有窗口**（默认前 6 段），跨章节一致性主要靠术语表与语料库；超长文档建议分章处理。
+- **无自动更新 / 无云端同步 / 无 iOS 目标**（shared 已为 iOS 预留结构）。
+- **UI 无自动化测试**：领域层有测试（13 项），界面靠真机/模拟器验证 + CI 构建校验。
+- **P2 未实现**：实时剪贴板监听、字幕时间轴联动编辑。
+
+架构、技术选型、核心代码示例与更完整的边界说明见 [`app/docs/architecture.md`](app/docs/architecture.md)。
+
+---
+
+## LingoFlow CLI：代码 i18n
+
+```bash
+lingoflow init --preset react && lingoflow sync     # 扫描 → 抽取 → 翻译 → 校验 → 回写 → 学习
+lingoflow check --fail-on warn                      # CI 门禁（占位符/ICU/CJK 排版/长度/术语一致性）
+```
+
+- 8 种语言文件格式无损读写（JSON/JSON5、YAML、`.properties`、gettext `.po`、Flutter `.arb`、Apple `.strings`、CSV、TS/JS）
+- UI 长度预检（字体度量 px/字符 + 14 类控件预算）、伪本地化压测、SARIF 报告
+- 私有记忆库（SQLite/JSONL）+ 术语表 + 从审校差异学习的修正规则
+
+详见 [CLI 工作流](docs/workflow.md) 与 [配置参考](docs/configuration.md)。
+
+---
+
+## 仓库结构
+
+```
+app/                       Kotlin Multiplatform 应用
+  shared/                  commonMain：文档模型/术语/语料/翻译编排/Compose UI（无平台依赖）
+  jvmCore/                 文件工作区 · DOCX/PDF 解析 · OkHttp 模型引擎 · 桌面服务
+  androidApp/              SAF 选择器 · ML Kit OCR · Keystore 密钥 · 裁剪擦除
+  desktopApp/              macOS/Windows/Linux 入口 · 文件对话框 · 快捷键
+  docs/architecture.md     功能架构 · 技术选型 · 核心代码示例 · 缺陷边界
+src/                       Node CLI（代码 i18n）
+```
 
 ## License
 
