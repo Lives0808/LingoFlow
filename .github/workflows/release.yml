@@ -4,80 +4,145 @@ on:
   push:
     tags: ['v*']
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to release (e.g. 0.2.0)'
-        required: false
 
 permissions:
   contents: write
 
 jobs:
-  release:
+  cli:
+    name: CLI artifacts
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      # ---------- CLI (Node) ----------
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
-
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
 
-      # ---------- Android app ----------
+      - name: Package CLI
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          mkdir -p release
+          cp bin/lingoflow.mjs "release/lingoflow-$VERSION.mjs"
+          cp bin/lingoflow.mjs release/lingoflow.mjs
+          npm pack --pack-destination release
+          ls -la release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cli
+          path: release/*
+          if-no-files-found: error
+
+  android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
-
       - uses: android-actions/setup-android@v3
         with:
           packages: 'platforms;android-36 build-tools;36.0.0'
-
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Android unit tests
-        working-directory: android
-        run: ./gradlew :app:testDebugUnitTest --stacktrace
-
-      - name: Build signed release APK
-        working-directory: android
-        run: ./gradlew :app:assembleRelease :app:assembleDebug --stacktrace
-
-      - name: Read version
-        id: meta
+      - name: Build and verify the APK
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "Releasing $VERSION"
+          ./gradlew :androidApp:assembleRelease :androidApp:assembleDebug --stacktrace
+          APK=androidApp/build/outputs/apk/release/androidApp-release.apk
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | head -5
 
       - name: Package artifacts
         run: |
+          VERSION=$(grep -m1 'versionName' androidApp/build.gradle.kts | sed 's/.*"\(.*\)".*/\1/')
           mkdir -p release
-          cp bin/lingoflow.mjs "release/lingoflow-${{ steps.meta.outputs.version }}.mjs"
-          cp bin/lingoflow.mjs release/lingoflow.mjs
-          npm pack --pack-destination release
-          cp android/app/build/outputs/apk/release/app-release.apk \
-             "release/lingoflow-android-${{ steps.meta.outputs.version }}.apk"
-          cp android/app/build/outputs/apk/debug/app-debug.apk \
-             "release/lingoflow-android-${{ steps.meta.outputs.version }}-debug.apk"
+          cp androidApp/build/outputs/apk/release/androidApp-release.apk "release/lingoflow-android-$VERSION.apk"
+          cp androidApp/build/outputs/apk/debug/androidApp-debug.apk "release/lingoflow-android-$VERSION-debug.apk"
+          ls -la release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: app/release/*
+          if-no-files-found: error
+
+  desktop:
+    name: Desktop (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: app
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            task: packageDmg
+          - os: windows-latest
+            task: packageMsi
+          - os: ubuntu-latest
+            task: packageDeb
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests
+        run: ./gradlew :jvmCore:test :shared:desktopTest --stacktrace
+
+      - name: Package desktop app
+        run: ./gradlew :desktopApp:${{ matrix.task }} --stacktrace
+
+      - name: Collect installers
+        shell: bash
+        run: |
+          mkdir -p release
+          find desktopApp/build/compose/binaries -type f \( -name '*.dmg' -o -name '*.msi' -o -name '*.deb' \) -exec cp {} release/ \;
+          ls -la release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: app/release/*
+          if-no-files-found: error
+
+  publish:
+    name: Publish release
+    needs: [cli, android, desktop]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Collect assets and checksums
+        run: |
+          mkdir -p release
+          find artifacts -type f ! -name '*.json' -exec cp {} release/ \;
+          ls -la release
           cd release
           shasum -a 256 * > checksums.txt
-          ls -la
+          cat checksums.txt
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          name: LingoFlow ${{ steps.meta.outputs.version }}
+          name: LingoFlow ${{ github.ref_name }}
           draft: false
           generate_release_notes: true
-          files: |
-            release/*.mjs
-            release/*.tgz
-            release/*.apk
-            release/checksums.txt
+          files: release/*

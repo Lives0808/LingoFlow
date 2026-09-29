@@ -1,0 +1,9 @@
+build/
+.gradle/
+local.properties
+.kotlin/
+desktopApp/build/
+shared/build/
+jvmCore/build/
+androidApp/build/
+*.hprof

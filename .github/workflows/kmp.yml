@@ -1,0 +1,108 @@
+name: KMP Apps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - '.github/workflows/kmp.yml'
+  pull_request:
+    paths:
+      - 'app/**'
+      - '.github/workflows/kmp.yml'
+  workflow_dispatch:
+
+jobs:
+  shared-tests:
+    name: Shared core tests (JVM)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests (documents, terms, corpus, translator)
+        run: ./gradlew :jvmCore:test :shared:desktopTest --stacktrace
+
+      - name: Compile the desktop app
+        run: ./gradlew :desktopApp:compileKotlin --stacktrace
+
+  android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platforms;android-36 build-tools;36.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Assemble debug and signed release APKs
+        run: ./gradlew :androidApp:assembleDebug :androidApp:assembleRelease --stacktrace
+
+      - name: Verify the release APK
+        run: |
+          APK=androidApp/build/outputs/apk/release/androidApp-release.apk
+          test -f "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | head -10
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lingoflow-android
+          path: |
+            app/androidApp/build/outputs/apk/release/androidApp-release.apk
+            app/androidApp/build/outputs/apk/debug/androidApp-debug.apk
+          if-no-files-found: error
+
+  desktop:
+    name: Desktop package (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: app
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            task: packageDmg
+            artifact: LingoFlow-0.3.0.dmg
+            path: desktopApp/build/compose/binaries/main/dmg/*.dmg
+          - os: windows-latest
+            task: packageMsi
+            artifact: LingoFlow-0.3.0.msi
+            path: desktopApp/build/compose/binaries/main/msi/*.msi
+          - os: ubuntu-latest
+            task: packageDeb
+            artifact: lingoflow_0.3.0_amd64.deb
+            path: desktopApp/build/compose/binaries/main/deb/*.deb
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Package the desktop app
+        run: ./gradlew :desktopApp:${{ matrix.task }} --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lingoflow-desktop-${{ matrix.os }}
+          path: app/${{ matrix.path }}
+          if-no-files-found: error

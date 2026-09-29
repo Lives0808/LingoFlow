@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<full-backup-content>
-    <!-- Project folders are user data outside the app; only settings and the
-         private translation memory are backed up. -->
-    <include domain="sharedpref" path="." />
-    <include domain="database" path="." />
-</full-backup-content>
