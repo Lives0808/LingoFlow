@@ -110,7 +110,17 @@ jobs:
         shell: bash
         run: |
           mkdir -p release
-          find desktopApp/build/compose/binaries -type f \( -name '*.dmg' -o -name '*.msi' -o -name '*.deb' \) -exec cp {} release/ \;
+          # jpackage requires installer versions with MAJOR >= 1, so rename the
+          # artifacts back to the product version for the release page.
+          VERSION=$(grep -m1 'packageVersion' desktopApp/build.gradle.kts | sed 's/.*"\(.*\)".*/\1/')
+          echo "product version: $VERSION"
+          while IFS= read -r file; do
+            case "$file" in
+              *.dmg) cp "$file" "release/LingoFlow-$VERSION.dmg" ;;
+              *.msi) cp "$file" "release/LingoFlow-$VERSION.msi" ;;
+              *.deb) cp "$file" "release/lingoflow_${VERSION}_amd64.deb" ;;
+            esac
+          done < <(find desktopApp/build/compose/binaries -type f \( -name '*.dmg' -o -name '*.msi' -o -name '*.deb' \))
           ls -la release
 
       - uses: actions/upload-artifact@v4

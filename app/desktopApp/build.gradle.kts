@@ -47,7 +47,9 @@ compose.desktop {
             macOS {
                 bundleID = "dev.lingoflow.desktop"
                 dockName = "LingoFlow"
-                // DMG requires MAJOR >= 1; the app version stays 0.3.0.
+                // jpackage/DMG require MAJOR >= 1; the product version stays 0.3.0
+                // and the release workflow renames the artifacts accordingly.
+                packageVersion = "1.0.0"
                 dmgPackageVersion = "1.0.0"
             }
             linux {
