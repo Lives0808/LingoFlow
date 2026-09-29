@@ -98,6 +98,10 @@ jobs:
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v4
 
+      - name: Install packaging tools (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get update && sudo apt-get install -y fakeroot
+
       - name: Package the desktop app
         run: ./gradlew :desktopApp:${{ matrix.task }} --stacktrace
 
